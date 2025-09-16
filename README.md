@@ -51,7 +51,7 @@ store-rating-platform/
 
 ⚙️ Installation & Setup
 1️⃣ Clone Repository
-git clone https://github.com/yourusername/store-rating-platform.git
+git clone https://github.com/JagtapChetan17/store-rating-platform.git
 cd store-rating-platform
 
 2️⃣ Backend Setup
@@ -100,7 +100,7 @@ Submit or modify ratings (1–5)
 
 See their submitted rating and store’s overall rating
 
-🏪 Store Owner
+🏪 Store OwneragtapCheta
 
 Log in and update password
 
