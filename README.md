@@ -25,6 +25,7 @@ Authentication: JWT (JSON Web Tokens), bcrypt
 Styling: CSS (custom)
 
 📂 Project Structure
+
 <img width="530" height="513" alt="image" src="https://github.com/user-attachments/assets/4e435921-db74-440f-a3f5-16fac1a001bc" />
 
 
