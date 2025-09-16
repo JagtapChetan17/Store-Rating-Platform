@@ -25,29 +25,7 @@ Authentication: JWT (JSON Web Tokens), bcrypt
 Styling: CSS (custom)
 
 📂 Project Structure
-store-rating-platform/
-├── backend/
-│   ├── config/          # Database configuration
-│   ├── controllers/     # Business logic for routes
-│   ├── middleware/      # Authentication & validation
-│   ├── models/          # Database models (User, Store, Rating)
-│   ├── routes/          # API route definitions
-│   ├── utils/           # Helper functions
-│   ├── package.json     
-│   └── server.js        # Entry point for backend
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/  # UI components for Admin, User, Store Owner
-│   │   ├── contexts/    # React Context (Auth)
-│   │   ├── services/    # API integration
-│   │   ├── styles/      # CSS files
-│   │   ├── App.js       
-│   │   └── index.js     
-│   ├── package.json
-│   └── package-lock.json
-└── database/
-    └── schema.sql       # Database schema and initial setup
+<img width="530" height="513" alt="image" src="https://github.com/user-attachments/assets/4e435921-db74-440f-a3f5-16fac1a001bc" />
 
 ⚙️ Installation & Setup
 1️⃣ Clone Repository
