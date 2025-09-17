@@ -1,7 +1,3 @@
-Got it ✅ — here’s your **full updated README.md** file with the **live frontend link** included, following the Watchflix style you liked:
-
----
-
 # Store Rating Platform (React + Express + MySQL)
 
 Full-stack store rating application where users can register, log in, browse stores, and submit ratings (1–5).
