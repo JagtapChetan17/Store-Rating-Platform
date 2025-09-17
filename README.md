@@ -9,7 +9,7 @@ Supports **role-based authentication** for **Admins, Normal Users, and Store Own
 
 * **Frontend (Live):** [Store Rating Platform](https://store-rating-platform-eight.vercel.app/login)
 * **Admin / Backend (Hosted):** *add link here if deployed*
-* **Demo Video:** [📹 Watch Demo](./store-rating-app-demo%20video.mp4)
+* **Demo Video:** [📹 Watch Demo](https://drive.google.com/file/d/16T3tsmsUUse88c6B6SsBK1kZwL32lL1g/view?usp=sharing)
 
 ⚠️ **Note:** It may take up to **72 hours** for the hosted database to be fully activated.
 Meanwhile, you can **download and run the project locally** following the setup steps below.
