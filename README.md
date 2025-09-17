@@ -1,112 +1,210 @@
-Store Rating Platform
-📖 Project Description
+Got it ✅ — here’s your **full updated README.md** file with the **live frontend link** included, following the Watchflix style you liked:
 
-The Store Rating Platform is a full-stack web application that enables users to submit and manage ratings for stores.
-It supports role-based authentication with three types of users:
+---
 
-System Administrator – Manage users, stores, and view overall statistics.
+# Store Rating Platform (React + Express + MySQL)
 
-Normal User – Register, log in, browse stores, and submit/modify ratings (1–5).
+Full-stack store rating application where users can register, log in, browse stores, and submit ratings (1–5).
+Supports **role-based authentication** for **Admins, Normal Users, and Store Owners**, with dashboards and CRUD functionalities.
 
-Store Owner – View ratings submitted for their store and track the average rating.
+---
 
-This project is built using Express.js (backend), MySQL (database), and React.js (frontend) following best practices for scalability, validation, and clean architecture.
+## Demo / Live Links
 
-🚀 Tech Stack
+* **Frontend (Live):** [Store Rating Platform](https://store-rating-platform-eight.vercel.app/login)
+* **Admin / Backend (Hosted):** *add link here if deployed*
 
-Backend: Express.js
+---
 
-Database: MySQL
+## Table of contents
 
-Frontend: React.js
+* [What is Store Rating Platform?](#what-is-store-rating-platform)
+* [Features](#features)
+* [Tech stack](#tech-stack)
+* [Prerequisites](#prerequisites)
+* [Folder structure](#folder-structure)
+* [Setup & Run (Backend)](#setup--run-backend)
+* [Setup & Run (Frontend)](#setup--run-frontend)
+* [Environment variables](#environment-variables)
+* [Building / Release notes](#building--release-notes)
+* [Contributing](#contributing)
+* [Troubleshooting](#troubleshooting)
+* [License](#license)
 
-Authentication: JWT (JSON Web Tokens), bcrypt
+---
 
-Styling: CSS (custom)
+## What is Store Rating Platform?
 
-📂 Project Structure
+The **Store Rating Platform** is a web app that allows users to browse stores and submit ratings (1–5).
 
-<img width="530" height="513" alt="image" src="https://github.com/user-attachments/assets/4e435921-db74-440f-a3f5-16fac1a001bc" />
+* **Admins** can manage users and stores with a dashboard view of key stats.
+* **Normal Users** can register, log in, browse/search stores, and leave ratings.
+* **Store Owners** can view ratings for their stores and track average performance.
 
+---
 
-⚙️ Installation & Setup
-1️⃣ Clone Repository
-git clone https://github.com/JagtapChetan17/store-rating-platform.git
-cd store-rating-platform
+## Features
 
-2️⃣ Backend Setup
+* 🔑 **Role-based authentication** (Admin, User, Store Owner)
+* 👤 User registration & login (JWT-based auth)
+* 🏪 Store management (CRUD operations)
+* ⭐ Rating system (1–5, add/modify ratings)
+* 📊 Admin dashboard with stats (users, stores, ratings)
+* 🔍 Search & filtering by name, email, address
+* 🔐 Secure password hashing (bcrypt)
+* ✅ Form validations (name length, password rules, etc.)
+
+---
+
+## Tech stack
+
+* **Frontend:** React.js (frontend folder)
+* **Backend:** Node.js + Express (backend folder)
+* **Database:** MySQL
+* **Authentication:** JWT + bcrypt
+
+---
+
+## Prerequisites
+
+* Node.js (16+)
+* npm or Yarn
+* MySQL server
+* Git
+
+---
+
+## Folder structure
+
+```
+store-rating-platform/
+├── backend/          # Express.js backend
+│   ├── config/       # DB connection
+│   ├── controllers/  # Route handlers
+│   ├── middleware/   # Auth & validation
+│   ├── models/       # User, Store, Rating
+│   ├── routes/       # API routes
+│   ├── utils/        # Helpers
+│   └── server.js     # Entry point
+├── frontend/         # React frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── components/ # Role-based UI
+│   │   ├── contexts/   # Auth context
+│   │   ├── services/   # API calls
+│   │   └── App.js
+├── database/
+│   └── schema.sql    # DB schema setup
+└── README.md
+```
+
+---
+
+## Setup & Run — Backend
+
+```bash
 cd backend
 npm install
+```
 
+Import schema:
 
-Configure your MySQL database in backend/config/database.js.
-
-Import schema from database/schema.sql.
-
+```bash
 mysql -u root -p store_rating < ../database/schema.sql
+```
 
+Create `.env` file inside `backend/`:
 
-Run backend server:
+```
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=yourpassword
+DB_NAME=store_rating
+JWT_SECRET=your_jwt_secret
+```
 
+Run backend:
+
+```bash
+npm run dev
+# or
 npm start
+```
 
-3️⃣ Frontend Setup
-cd ../frontend
+---
+
+## Setup & Run — Frontend
+
+```bash
+cd frontend
 npm install
 npm start
+```
 
+Frontend runs at 👉 `http://localhost:3000`
 
-Runs the app in development mode at:
-👉 http://localhost:3000
+---
 
-🔑 User Roles & Functionalities
-👨‍💻 System Administrator
+## Environment variables
 
-Add stores, normal users, and other admins
+**Backend — backend/.env**
 
-Dashboard with total users, stores, and ratings
+```
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=yourpassword
+DB_NAME=store_rating
+JWT_SECRET=your_jwt_secret
+```
 
-View and filter user/store lists
+**Frontend — frontend/.env (optional)**
 
-View detailed user info
+```
+REACT_APP_API_URL=http://localhost:5000/api
+```
 
-🙍 Normal User
+---
 
-Register, log in, and update password
+## Building / Release notes
 
-Browse/search stores (by name/address)
+* For production, build React frontend:
 
-Submit or modify ratings (1–5)
+```bash
+cd frontend
+npm run build
+```
 
-See their submitted rating and store’s overall rating
+* Deploy backend to Render/Heroku and frontend to Netlify/Vercel.
+* Ensure `.env` values are set correctly in production.
 
-🏪 Store OwneragtapCheta
+---
 
-Log in and update password
+## Contributing
 
-View list of users who rated their store
+1. Fork the repo
+2. Create a branch: `git checkout -b feat/your-feature`
+3. Commit changes: `git commit -m "Added feature"`
+4. Push: `git push origin feat/your-feature`
+5. Open a PR
 
-Check average rating of their store
+---
 
-✅ Form Validations
+## Troubleshooting
 
-Name: 20–60 characters
+* **DB connection failed** → Check `.env` DB credentials and schema.sql import.
+* **Frontend not loading data** → Verify `REACT_APP_API_URL` matches backend.
+* **Auth errors** → Ensure JWT secret matches across backend services.
 
-Address: Up to 400 characters
+---
 
-Password: 8–16 characters, at least 1 uppercase and 1 special character
+## License
 
-Email: Standard email format
+Specify your preferred license (e.g., MIT).
 
-📊 Features
+---
 
-✔ Role-based authentication (JWT)
-✔ Secure password storage (bcrypt)
-✔ MySQL relational schema with normalization
-✔ Sorting & filtering in admin dashboards
-✔ CRUD operations for users, stores, and ratings
-✔ Responsive frontend with React.js
+⚡ Done! This is **copy-paste ready** for your repo.
 
-📝 License
-
-This project is for educational and internship purposes.
+Do you also want me to prepare a small **`.env.example` file** (backend + frontend) so recruiters/testers can set up faster?
