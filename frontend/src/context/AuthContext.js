@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await authAPI.post('/register', userData);
+      const response = await authAPI.post('/auth/register', userData);
       const { token } = response.data;
       
       localStorage.setItem('token', token);
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   const changePassword = async (passwordData) => {
     try {
-      await authAPI.put('/change-password', passwordData);
+      await authAPI.put('/auth/change-password', passwordData);
       return { success: true, message: 'Password changed successfully' };
     } catch (error) {
       return { 
