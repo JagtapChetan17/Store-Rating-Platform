@@ -1,13 +1,3 @@
-Got it 👍 I’ll update your **README.md** with:
-
-* The **demo video** (uploaded MP4 link reference).
-* **Login details** (Admin, Store Owner, User).
-* A note about the **database activation delay (up to 72 hours)** and that users can clone/download the repo to use it locally meanwhile.
-
-Here’s your full updated README:
-
----
-
 # Store Rating Platform (React + Express + MySQL)
 
 Full-stack store rating application where users can register, log in, browse stores, and submit ratings (1–5).
