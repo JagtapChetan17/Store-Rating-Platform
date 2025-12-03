@@ -1,3 +1,4 @@
+// frontend/src/contexts/AuthContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authAPI } from '../services/api';
 
@@ -12,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if user is logged in on app load
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
     
@@ -33,7 +35,7 @@ export const AuthProvider = ({ children }) => {
       authAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setCurrentUser(user);
       
-      return { success: true, user };
+      return { success: true };
     } catch (error) {
       return { 
         success: false, 
@@ -45,36 +47,21 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await authAPI.post('/auth/register', userData);
-      const { token, user } = response.data;
+      const { token } = response.data;
       
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
       authAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setCurrentUser(user);
       
-      return { success: true, user };
+      // After registration, we need to get user details
+      const userResponse = await authAPI.get('/users/me');
+      setCurrentUser(userResponse.data);
+      localStorage.setItem('user', JSON.stringify(userResponse.data));
+      
+      return { success: true };
     } catch (error) {
       return { 
         success: false, 
         message: error.response?.data?.message || 'Registration failed' 
-      };
-    }
-  };
-
-  const changePassword = async (passwordData) => {
-    try {
-      console.log('Changing password with data:', { ...passwordData, newPassword: '***' });
-      const response = await authAPI.put('/auth/change-password', passwordData);
-      console.log('Change password response:', response.data);
-      return { 
-        success: true, 
-        message: response.data.message || 'Password changed successfully' 
-      };
-    } catch (error) {
-      console.error('Change password error:', error);
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Password change failed' 
       };
     }
   };
@@ -86,12 +73,24 @@ export const AuthProvider = ({ children }) => {
     setCurrentUser(null);
   };
 
+  const changePassword = async (passwordData) => {
+    try {
+      await authAPI.put('/auth/change-password', passwordData);
+      return { success: true, message: 'Password changed successfully' };
+    } catch (error) {
+      return { 
+        success: false, 
+        message: error.response?.data?.message || 'Password change failed' 
+      };
+    }
+  };
+
   const value = {
     currentUser,
     login,
     register,
-    changePassword,
-    logout
+    logout,
+    changePassword
   };
 
   return (

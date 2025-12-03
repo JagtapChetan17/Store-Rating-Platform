@@ -1,5 +1,7 @@
+// frontend/src/components/Common/ChangePassword.js
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import '../../styles/App.css';
 
 const ChangePassword = () => {
   const [formData, setFormData] = useState({
@@ -21,11 +23,6 @@ const ChangePassword = () => {
   };
 
   const validateForm = () => {
-    if (!formData.currentPassword || !formData.newPassword || !formData.confirmPassword) {
-      setError('All fields are required');
-      return false;
-    }
-
     if (formData.newPassword !== formData.confirmPassword) {
       setError('New passwords do not match');
       return false;
@@ -62,166 +59,72 @@ const ChangePassword = () => {
       });
       
       if (result.success) {
-        setSuccess('Password changed successfully!');
+        setSuccess(result.message);
         setFormData({
           currentPassword: '',
           newPassword: '',
           confirmPassword: ''
         });
       } else {
-        setError(result.message || 'Failed to change password');
+        setError(result.message);
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      setError('Failed to change password');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{
-      maxWidth: '500px',
-      margin: '40px auto',
-      padding: '30px',
-      backgroundColor: 'white',
-      borderRadius: '10px',
-      boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-    }}>
-      <h2 style={{ 
-        marginBottom: '20px',
-        color: '#333',
-        textAlign: 'center'
-      }}>
-        Change Password
-      </h2>
-      
-      {error && (
-        <div style={{
-          padding: '10px',
-          backgroundColor: '#ffebee',
-          color: '#c62828',
-          borderRadius: '5px',
-          marginBottom: '20px'
-        }}>
-          {error}
-        </div>
-      )}
-      
-      {success && (
-        <div style={{
-          padding: '10px',
-          backgroundColor: '#e8f5e9',
-          color: '#2e7d32',
-          borderRadius: '5px',
-          marginBottom: '20px'
-        }}>
-          {success}
-        </div>
-      )}
-      
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{
-            display: 'block',
-            marginBottom: '5px',
-            fontWeight: '500'
-          }}>
-            Current Password
-          </label>
-          <input
-            type="password"
-            name="currentPassword"
-            value={formData.currentPassword}
-            onChange={handleChange}
-            disabled={loading}
-            style={{
-              width: '100%',
-              padding: '10px',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              fontSize: '16px'
-            }}
-            required
-          />
-        </div>
+    <div className="change-password-container">
+      <div className="change-password-form">
+        <h2>Change Password</h2>
         
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{
-            display: 'block',
-            marginBottom: '5px',
-            fontWeight: '500'
-          }}>
-            New Password
-          </label>
-          <input
-            type="password"
-            name="newPassword"
-            value={formData.newPassword}
-            onChange={handleChange}
-            disabled={loading}
-            style={{
-              width: '100%',
-              padding: '10px',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              fontSize: '16px'
-            }}
-            required
-          />
-          <div style={{
-            fontSize: '12px',
-            color: '#666',
-            marginTop: '5px'
-          }}>
-            Must be 8-16 characters with 1 uppercase and 1 special character
+        {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="currentPassword">Current Password</label>
+            <input
+              type="password"
+              id="currentPassword"
+              name="currentPassword"
+              value={formData.currentPassword}
+              onChange={handleChange}
+              required
+            />
           </div>
-        </div>
-        
-        <div style={{ marginBottom: '25px' }}>
-          <label style={{
-            display: 'block',
-            marginBottom: '5px',
-            fontWeight: '500'
-          }}>
-            Confirm New Password
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            disabled={loading}
-            style={{
-              width: '100%',
-              padding: '10px',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              fontSize: '16px',
-              borderColor: formData.confirmPassword ? 
-                (formData.newPassword === formData.confirmPassword ? '#4caf50' : '#f44336') : 
-                '#ddd'
-            }}
-            required
-          />
-        </div>
-        
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '12px',
-            backgroundColor: loading ? '#ccc' : '#2196f3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            fontSize: '16px',
-            cursor: loading ? 'not-allowed' : 'pointer'
-          }}
-        >
-          {loading ? 'Changing Password...' : 'Change Password'}
-        </button>
-      </form>
+
+          <div className="form-group">
+            <label htmlFor="newPassword">New Password (8-16 characters, 1 uppercase, 1 special character)</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm New Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" disabled={loading} className="auth-btn">
+            {loading ? 'Changing Password...' : 'Change Password'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

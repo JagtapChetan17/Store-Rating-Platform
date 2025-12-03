@@ -1,13 +1,13 @@
+// frontend/src/components/User/StoreList.js
 import React, { useState, useEffect } from 'react';
 import { userAPI } from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
+import '../../styles/App.css';
 
 const StoreList = () => {
   const [stores, setStores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const { currentUser } = useAuth();
 
   useEffect(() => {
     loadStores();
@@ -39,61 +39,26 @@ const StoreList = () => {
   };
 
   if (loading) {
-    return (
-      <div style={{
-        textAlign: 'center',
-        padding: '2rem',
-        color: '#7f8c8d'
-      }}>
-        Loading stores...
-      </div>
-    );
+    return <div className="loading">Loading stores...</div>;
   }
 
   return (
-    <div style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '2rem'
-    }}>
-      <h2 style={{ color: '#2c3e50', marginBottom: '1.5rem' }}>
-        {currentUser?.role === 'user' ? 'Rate Stores' : 'Stores'}
-      </h2>
+    <div className="store-list-container">
+      <h2>Stores</h2>
       
-      <div style={{ marginBottom: '2rem' }}>
+      <div className="search-container">
         <input
           type="text"
           placeholder="Search by name or address..."
           value={searchTerm}
           onChange={handleSearch}
-          style={{
-            width: '100%',
-            maxWidth: '400px',
-            padding: '0.75rem',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            fontSize: '1rem'
-          }}
+          className="search-input"
         />
       </div>
 
-      {error && (
-        <div style={{
-          backgroundColor: '#f8d7da',
-          color: '#721c24',
-          padding: '0.75rem',
-          borderRadius: '4px',
-          marginBottom: '1rem'
-        }}>
-          {error}
-        </div>
-      )}
+      {error && <div className="error-message">{error}</div>}
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-        gap: '2rem'
-      }}>
+      <div className="stores-grid">
         {stores.map(store => (
           <StoreCard 
             key={store.id} 
@@ -104,13 +69,7 @@ const StoreList = () => {
       </div>
 
       {stores.length === 0 && !loading && (
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem',
-          color: '#7f8c8d'
-        }}>
-          No stores found
-        </div>
+        <div className="no-stores">No stores found</div>
       )}
     </div>
   );
@@ -121,8 +80,17 @@ const StoreCard = ({ store, onRate }) => {
   const [tempRating, setTempRating] = useState(0);
 
   useEffect(() => {
-    setUserRating(store.user_rating || 0);
-  }, [store.user_rating]);
+    loadUserRating();
+  }, [store.id]);
+
+  const loadUserRating = async () => {
+    try {
+      const response = await userAPI.getUserRating(store.id);
+      setUserRating(response.data.rating || 0);
+    } catch (error) {
+      console.error('Failed to load user rating');
+    }
+  };
 
   const handleRate = async (rating) => {
     await onRate(store.id, rating);
@@ -130,65 +98,24 @@ const StoreCard = ({ store, onRate }) => {
   };
 
   return (
-    <div style={{
-      background: 'white',
-      padding: '1.5rem',
-      borderRadius: '8px',
-      boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-      transition: 'transform 0.2s'
-    }}>
-      <h3 style={{ 
-        marginTop: 0, 
-        color: '#2c3e50',
-        marginBottom: '0.5rem'
-      }}>
-        {store.name}
-      </h3>
-      <p style={{ 
-        color: '#7f8c8d',
-        marginBottom: '1rem',
-        fontSize: '0.9rem'
-      }}>
-        {store.address}
-      </p>
-      <div style={{ marginBottom: '1rem' }}>
-        <span style={{ 
-          display: 'block',
-          marginBottom: '0.5rem',
-          fontWeight: '500'
-        }}>
+    <div className="store-card">
+      <h3>{store.name}</h3>
+      <p className="store-address">{store.address}</p>
+      <div className="store-rating">
+        <span className="average-rating">
           Average Rating: {parseFloat(store.average_rating).toFixed(1)}/5
         </span>
         {userRating > 0 && (
-          <span style={{ 
-            display: 'block',
-            marginBottom: '0.5rem',
-            fontWeight: '500',
-            color: '#3498db'
-          }}>
-            Your Rating: {userRating}/5
-          </span>
+          <span className="user-rating">Your Rating: {userRating}/5</span>
         )}
       </div>
-      <div>
-        <p style={{ 
-          marginBottom: '0.5rem',
-          fontWeight: '500'
-        }}>
-          Rate this store:
-        </p>
-        <div style={{ display: 'flex', gap: '0.25rem' }}>
+      <div className="rating-controls">
+        <p>Rate this store:</p>
+        <div className="stars">
           {[1, 2, 3, 4, 5].map(star => (
             <button
               key={star}
-              style={{
-                background: 'none',
-                border: 'none',
-                fontSize: '1.5rem',
-                color: star <= (tempRating || userRating) ? '#f39c12' : '#ddd',
-                cursor: 'pointer',
-                transition: 'color 0.2s'
-              }}
+              className={`star ${star <= (tempRating || userRating) ? 'active' : ''}`}
               onMouseEnter={() => setTempRating(star)}
               onMouseLeave={() => setTempRating(0)}
               onClick={() => handleRate(star)}

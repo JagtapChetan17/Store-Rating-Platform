@@ -1,8 +1,10 @@
+// frontend/src/services/api.js
 import axios from 'axios';
 
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-const api = axios.create({
+// Create axios instance with base config
+export const authAPI = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -10,7 +12,7 @@ const api = axios.create({
 });
 
 // Add request interceptor to include auth token
-api.interceptors.request.use(
+authAPI.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -24,7 +26,7 @@ api.interceptors.request.use(
 );
 
 // Add response interceptor to handle auth errors
-api.interceptors.response.use(
+authAPI.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
@@ -37,23 +39,21 @@ api.interceptors.response.use(
 );
 
 // API functions
-export const authAPI = api;
-
 export const adminAPI = {
-  getDashboardStats: () => api.get('/admin/dashboard/stats'),
-  createUser: (userData) => api.post('/admin/users', userData),
-  createStore: (storeData) => api.post('/admin/stores', storeData),
-  getUsers: (filters) => api.get('/admin/users', { params: filters }),
-  getStores: (filters) => api.get('/admin/stores', { params: filters }),
-  getUserDetails: (id) => api.get(`/admin/users/${id}`),
+  getDashboardStats: () => authAPI.get('/admin/dashboard/stats'),
+  createUser: (userData) => authAPI.post('/admin/users', userData),
+  createStore: (storeData) => authAPI.post('/admin/stores', storeData),
+  getUsers: (filters) => authAPI.get('/admin/users', { params: filters }),
+  getStores: (filters) => authAPI.get('/admin/stores', { params: filters }),
+  getUserDetails: (id) => authAPI.get(`/admin/users/${id}`),
 };
 
 export const userAPI = {
-  getStores: (searchTerm) => api.get('/users/stores', { params: { search: searchTerm } }),
-  submitRating: (ratingData) => api.post('/users/ratings', ratingData),
-  getUserRating: (storeId) => api.get(`/users/ratings/${storeId}`),
+  getStores: (searchTerm) => authAPI.get('/users/stores', { params: { search: searchTerm } }),
+  submitRating: (ratingData) => authAPI.post('/users/ratings', ratingData),
+  getUserRating: (storeId) => authAPI.get(`/users/ratings/${storeId}`),
 };
 
 export const storeOwnerAPI = {
-  getStoreRatings: () => api.get('/store-owner/ratings'),
+  getStoreRatings: () => authAPI.get('/store-owner/ratings'),
 };
