@@ -1,3 +1,4 @@
+// backend/controllers/adminController.js
 const User = require('../models/User');
 const Store = require('../models/Store');
 const Rating = require('../models/Rating');
@@ -30,12 +31,9 @@ const createUser = async (req, res) => {
     // Create user
     const result = await User.create({ name, email, password: hashedPassword, address, role });
 
-    res.status(201).json({ 
-      message: 'User created successfully', 
-      userId: result.insertId 
-    });
+    res.status(201).json({ message: 'User created successfully', userId: result.insertId });
   } catch (error) {
-    console.error('Create user error:', error.message);
+    console.error(error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -44,26 +42,11 @@ const createStore = async (req, res) => {
   try {
     const { name, email, address, owner_id } = req.body;
 
-    // Check if owner exists and is a store owner
-    const owner = await User.findById(owner_id);
-    if (owner.length === 0) {
-      return res.status(404).json({ message: 'Owner not found' });
-    }
-    
-    if (owner[0].role !== 'store_owner') {
-      return res.status(400).json({ 
-        message: 'Owner must have store_owner role' 
-      });
-    }
-
     const result = await Store.create({ name, email, address, owner_id });
 
-    res.status(201).json({ 
-      message: 'Store created successfully', 
-      storeId: result.insertId 
-    });
+    res.status(201).json({ message: 'Store created successfully', storeId: result.insertId });
   } catch (error) {
-    console.error('Create store error:', error.message);
+    console.error(error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -74,7 +57,7 @@ const getUsers = async (req, res) => {
     const users = await User.getAll(filters);
     res.json(users);
   } catch (error) {
-    console.error('Get users error:', error.message);
+    console.error(error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -85,7 +68,7 @@ const getStores = async (req, res) => {
     const stores = await Store.getAll(filters);
     res.json(stores);
   } catch (error) {
-    console.error('Get stores error:', error.message);
+    console.error(error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -113,7 +96,7 @@ const getUserDetails = async (req, res) => {
       res.json(user);
     }
   } catch (error) {
-    console.error('Get user details error:', error.message);
+    console.error(error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };

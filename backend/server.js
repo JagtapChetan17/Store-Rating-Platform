@@ -1,3 +1,4 @@
+// backend/server.js
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -19,44 +20,19 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/store-owner', storeRoutes);
 
-// Test endpoint
-app.get('/api/test', (req, res) => {
-  res.json({ 
-    success: true,
-    message: 'API is working',
-    timestamp: new Date().toISOString()
-  });
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
 });
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy',
-    service: 'Store Rating Platform',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Root
 app.get('/', (req, res) => {
-  res.json({
-    service: 'Store Rating Platform API',
-    version: '1.0.0',
-    endpoints: {
-      auth: '/api/auth',
-      users: '/api/users',
-      admin: '/api/admin',
-      storeOwner: '/api/store-owner'
-    }
-  });
+  res.send('Store Rating API is running');
 });
 
 // 404 handler
 app.use('*', (req, res) => {
-  res.status(404).json({ 
-    success: false,
-    message: 'Route not found' 
-  });
+  res.status(404).json({ message: 'Route not found' });
 });
 
 const PORT = process.env.PORT || 5000;

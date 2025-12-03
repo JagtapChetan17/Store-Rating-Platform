@@ -1,3 +1,4 @@
+// backend/routes/stores.js
 const express = require('express');
 const router = express.Router();
 const { getStoreRatings } = require('../controllers/storeOwnerController');

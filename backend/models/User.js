@@ -1,3 +1,4 @@
+// backend/models/user.js
 const db = require('../config/database');
 
 const User = {
@@ -15,7 +16,7 @@ const User = {
   },
 
   findById: async (id) => {
-    const query = 'SELECT * FROM users WHERE id = ?';
+    const query = 'SELECT id, name, email, address, role, created_at FROM users WHERE id = ?';
     const [rows] = await db.execute(query, [id]);
     return rows;
   },
