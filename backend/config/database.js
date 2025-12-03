@@ -3,12 +3,14 @@ require('dotenv').config();
 
 const DB_NAME = process.env.DB_NAME || 'store_rating_platform';
 
+// Create a separate connection for setup
 const setupConnection = mysql.createConnection({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || 'root'
 });
 
+// Create a connection pool for app usage
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
@@ -26,6 +28,7 @@ async function setupDatabase() {
   try {
     console.log('Setting up database...');
 
+    // Create database if not exists
     await setupConnection.promise().query(`
       CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`
       DEFAULT CHARACTER SET utf8mb4
@@ -34,12 +37,14 @@ async function setupDatabase() {
 
     await setupConnection.promise().query(`USE \`${DB_NAME}\``);
 
-    console.log('Creating tables...');
-
+    console.log('Dropping old tables if exist...');
     await setupConnection.promise().query("DROP TABLE IF EXISTS ratings");
     await setupConnection.promise().query("DROP TABLE IF EXISTS stores");
     await setupConnection.promise().query("DROP TABLE IF EXISTS users");
 
+    console.log('Creating tables...');
+
+    // USERS table (old MySQL compatible)
     await setupConnection.promise().query(`
       CREATE TABLE users (
         id INT NOT NULL AUTO_INCREMENT,
@@ -48,14 +53,15 @@ async function setupDatabase() {
         password VARCHAR(255) NOT NULL,
         address VARCHAR(400) NOT NULL,
         role ENUM('admin','user','store_owner') DEFAULT 'user',
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NULL DEFAULT NULL,
         PRIMARY KEY (id),
         UNIQUE KEY email (email)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
     `);
     console.log('Users table created');
 
+    // STORES table
     await setupConnection.promise().query(`
       CREATE TABLE stores (
         id INT NOT NULL AUTO_INCREMENT,
@@ -63,8 +69,8 @@ async function setupDatabase() {
         email VARCHAR(191) NOT NULL,
         address VARCHAR(400) NOT NULL,
         owner_id INT DEFAULT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NULL DEFAULT NULL,
         PRIMARY KEY (id),
         UNIQUE KEY email (email),
         KEY owner_id (owner_id),
@@ -74,14 +80,15 @@ async function setupDatabase() {
     `);
     console.log('Stores table created');
 
+    // RATINGS table
     await setupConnection.promise().query(`
       CREATE TABLE ratings (
         id INT NOT NULL AUTO_INCREMENT,
         user_id INT NOT NULL,
         store_id INT NOT NULL,
-        rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        rating INT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NULL DEFAULT NULL,
         PRIMARY KEY (id),
         UNIQUE KEY unique_user_store (user_id, store_id),
         KEY store_id (store_id),
@@ -94,7 +101,6 @@ async function setupDatabase() {
     console.log('Ratings table created');
 
     console.log('Database setup completed successfully');
-
   } catch (err) {
     console.error("Database setup error:", err);
   } finally {
@@ -102,8 +108,10 @@ async function setupDatabase() {
   }
 }
 
+// Run the setup
 setupDatabase();
 
+// Test pool connection
 pool.getConnection((err, connection) => {
   if (err) {
     console.error('Error getting connection from pool:', err.message);
@@ -113,6 +121,7 @@ pool.getConnection((err, connection) => {
   }
 });
 
+// Pool events
 pool.on('acquire', (connection) => {
   console.log('Connection %d acquired', connection.threadId);
 });
