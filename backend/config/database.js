@@ -5,7 +5,6 @@ require('dotenv').config();
 async function setupDatabase() {
   console.log('=== Setting up database ===');
   
-  // Create connection without database first
   const connection = await mysql.createConnection({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -14,11 +13,11 @@ async function setupDatabase() {
 
   try {
     // Create database if it doesn't exist
-    await connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME || 'sql12810415'}`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME || 'store_rating_platform'}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
     console.log('✅ Database created/verified');
     
     // Use the database
-    await connection.query(`USE ${process.env.DB_NAME || 'sql12810415'}`);
+    await connection.query(`USE \`${process.env.DB_NAME || 'store_rating_platform'}\``);
     
     // Drop tables if they exist
     await connection.query('DROP TABLE IF EXISTS ratings');
@@ -26,15 +25,15 @@ async function setupDatabase() {
     await connection.query('DROP TABLE IF EXISTS users');
     console.log('✅ Old tables dropped');
     
-    // Create users table
+    // Create users table (no CHECK, ENUM as VARCHAR)
     await connection.query(`
       CREATE TABLE users (
         id INT PRIMARY KEY AUTO_INCREMENT,
         name VARCHAR(60) NOT NULL,
-        email VARCHAR(100) UNIQUE NOT NULL,
+        email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
-        address TEXT,
-        role ENUM('user', 'store_owner', 'admin') DEFAULT 'user',
+        address VARCHAR(255),
+        role VARCHAR(20) DEFAULT 'user',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         INDEX idx_email (email),
@@ -48,8 +47,8 @@ async function setupDatabase() {
       CREATE TABLE stores (
         id INT PRIMARY KEY AUTO_INCREMENT,
         name VARCHAR(60) NOT NULL,
-        email VARCHAR(100) UNIQUE NOT NULL,
-        address TEXT,
+        email VARCHAR(100) NOT NULL UNIQUE,
+        address VARCHAR(255),
         owner_id INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -60,13 +59,13 @@ async function setupDatabase() {
     `);
     console.log('✅ Stores table created');
     
-    // Create ratings table
+    // Create ratings table (remove CHECK, use INT and validate in app)
     await connection.query(`
       CREATE TABLE ratings (
         id INT PRIMARY KEY AUTO_INCREMENT,
         user_id INT NOT NULL,
         store_id INT NOT NULL,
-        rating INT CHECK (rating >= 1 AND rating <= 5),
+        rating INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
