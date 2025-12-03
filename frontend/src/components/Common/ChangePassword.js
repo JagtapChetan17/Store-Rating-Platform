@@ -1,4 +1,3 @@
-// frontend/src/components/Common/ChangePassword.js
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/App.css';
@@ -23,6 +22,15 @@ const ChangePassword = () => {
   };
 
   const validateForm = () => {
+    // Clear previous messages
+    setError('');
+    setSuccess('');
+
+    if (!formData.currentPassword || !formData.newPassword || !formData.confirmPassword) {
+      setError('Please fill in all fields');
+      return false;
+    }
+
     if (formData.newPassword !== formData.confirmPassword) {
       setError('New passwords do not match');
       return false;
@@ -34,7 +42,7 @@ const ChangePassword = () => {
     }
 
     if (!/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(formData.newPassword)) {
-      setError('New password must contain at least one uppercase letter and one special character');
+      setError('New password must contain at least one uppercase letter and one special character (!@#$%^&*)');
       return false;
     }
 
@@ -53,23 +61,28 @@ const ChangePassword = () => {
       setSuccess('');
       setLoading(true);
       
-      const result = await changePassword({
+      const passwordData = {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword
-      });
+      };
+      
+      console.log('Submitting password change:', passwordData);
+      
+      const result = await changePassword(passwordData);
       
       if (result.success) {
-        setSuccess(result.message);
+        setSuccess(result.message || 'Password changed successfully');
         setFormData({
           currentPassword: '',
           newPassword: '',
           confirmPassword: ''
         });
       } else {
-        setError(result.message);
+        setError(result.message || 'Failed to change password');
       }
     } catch (error) {
-      setError('Failed to change password');
+      console.error('Password change error:', error);
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -93,11 +106,14 @@ const ChangePassword = () => {
               value={formData.currentPassword}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="newPassword">New Password (8-16 characters, 1 uppercase, 1 special character)</label>
+            <label htmlFor="newPassword">
+              New Password (8-16 characters, 1 uppercase, 1 special character)
+            </label>
             <input
               type="password"
               id="newPassword"
@@ -105,6 +121,7 @@ const ChangePassword = () => {
               value={formData.newPassword}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           </div>
 
@@ -117,6 +134,7 @@ const ChangePassword = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           </div>
 

@@ -1,7 +1,6 @@
-// frontend/src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from '../src/context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Common/Header';
 import Login from './components/Common/Login';
 import Register from './components/Common/Register';

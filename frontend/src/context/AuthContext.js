@@ -1,4 +1,3 @@
-// frontend/src/contexts/AuthContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authAPI } from '../services/api';
 
@@ -18,8 +17,14 @@ export const AuthProvider = ({ children }) => {
     const user = localStorage.getItem('user');
     
     if (token && user) {
-      setCurrentUser(JSON.parse(user));
-      authAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      try {
+        setCurrentUser(JSON.parse(user));
+        authAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      } catch (error) {
+        console.error('Error parsing stored user:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
     }
     
     setLoading(false);
@@ -37,6 +42,7 @@ export const AuthProvider = ({ children }) => {
       
       return { success: true };
     } catch (error) {
+      console.error('Login error:', error);
       return { 
         success: false, 
         message: error.response?.data?.message || 'Login failed' 
@@ -47,18 +53,16 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await authAPI.post('/auth/register', userData);
-      const { token } = response.data;
+      const { token, user } = response.data;
       
       localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       authAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
-      // After registration, we need to get user details
-      const userResponse = await authAPI.get('/users/me');
-      setCurrentUser(userResponse.data);
-      localStorage.setItem('user', JSON.stringify(userResponse.data));
+      setCurrentUser(user);
       
       return { success: true };
     } catch (error) {
+      console.error('Registration error:', error);
       return { 
         success: false, 
         message: error.response?.data?.message || 'Registration failed' 
@@ -75,9 +79,13 @@ export const AuthProvider = ({ children }) => {
 
   const changePassword = async (passwordData) => {
     try {
-      await authAPI.put('/auth/change-password', passwordData);
-      return { success: true, message: 'Password changed successfully' };
+      const response = await authAPI.put('/auth/change-password', passwordData);
+      return { 
+        success: true, 
+        message: response.data.message || 'Password changed successfully' 
+      };
     } catch (error) {
+      console.error('Change password error:', error.response?.data);
       return { 
         success: false, 
         message: error.response?.data?.message || 'Password change failed' 

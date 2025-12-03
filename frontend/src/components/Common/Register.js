@@ -1,4 +1,3 @@
-// frontend/src/components/Common/Register.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -10,7 +9,8 @@ const Register = () => {
     email: '',
     address: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'user' // Added role field
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -122,6 +122,19 @@ const Register = () => {
               required
               rows="3"
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="role">Role</label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              required
+            >
+              <option value="user">User</option>
+              <option value="store_owner">Store Owner</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="password">Password (8-16 characters, 1 uppercase, 1 special character)</label>

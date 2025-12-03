@@ -1,4 +1,3 @@
-// backend/controllers/adminController.js
 const User = require('../models/User');
 const Store = require('../models/Store');
 const Rating = require('../models/Rating');

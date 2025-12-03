@@ -1,4 +1,3 @@
-// backend/middleware/auth.js
 const jwt = require('jsonwebtoken');
 
 const auth = (roles = []) => {
@@ -15,7 +14,14 @@ const auth = (roles = []) => {
       }
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret');
-      req.user = decoded.user;
+      
+      // Make sure user object is properly structured
+      req.user = {
+        id: decoded.user.id,
+        email: decoded.user.email,
+        role: decoded.user.role,
+        name: decoded.user.name || ''
+      };
 
       // Check if user has required role
       if (roles.length && !roles.includes(decoded.user.role)) {
@@ -24,6 +30,7 @@ const auth = (roles = []) => {
 
       next();
     } catch (error) {
+      console.error('Auth middleware error:', error.message);
       res.status(401).json({ message: 'Token is not valid' });
     }
   };
