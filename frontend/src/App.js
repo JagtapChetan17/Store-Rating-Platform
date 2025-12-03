@@ -11,22 +11,26 @@ import StoreOwnerDashboard from './components/StoreOwner/StoreOwnerDashboard';
 import PrivateRoute from './components/Common/PrivateRoute';
 
 const AppContent = () => {
+  const containerStyle = {
+    minHeight: '100vh',
+    backgroundColor: '#f5f7fa',
+    fontFamily: "'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+    fontSize: '16px'
+  };
+
+  const mainStyle = {
+    maxWidth: '1400px',
+    margin: '0 auto',
+    padding: '20px',
+    paddingTop: '80px'
+  };
+
   return (
     <Router>
       <AuthProvider>
-        <div style={{
-          minHeight: '100vh',
-          backgroundColor: '#f5f7fa',
-          fontFamily: "'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
-          fontSize: 'clamp(14px, 1vw, 16px)' // Responsive font size
-        }}>
+        <div style={containerStyle}>
           <Header />
-          <div style={{
-            maxWidth: '1400px',
-            margin: '0 auto',
-            padding: 'clamp(16px, 3vw, 32px)',
-            paddingTop: '80px' // Account for fixed header
-          }}>
+          <main style={mainStyle}>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -57,7 +61,7 @@ const AppContent = () => {
               
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
-          </div>
+          </main>
         </div>
       </AuthProvider>
     </Router>

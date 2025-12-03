@@ -97,99 +97,171 @@ const ChangePassword = () => {
     }
   };
 
+  const containerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 'calc(100vh - 120px)',
+    padding: '20px',
+    backgroundColor: '#f5f7fa'
+  };
+
+  const formContainerStyle = {
+    background: 'white',
+    padding: '40px',
+    borderRadius: '16px',
+    boxShadow: '0 10px 40px rgba(0,0,0,0.08)',
+    width: '100%',
+    maxWidth: '500px',
+    transition: 'transform 0.3s ease'
+  };
+
+  const headerStyle = {
+    textAlign: 'center',
+    marginBottom: '32px'
+  };
+
+  const iconStyle = {
+    width: '60px',
+    height: '60px',
+    backgroundColor: '#3498db',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '0 auto 16px',
+    fontSize: '24px',
+    color: 'white'
+  };
+
+  const titleStyle = {
+    margin: '0 0 8px 0',
+    color: '#2c3e50',
+    fontSize: '1.8rem',
+    fontWeight: '600'
+  };
+
+  const subtitleStyle = {
+    color: '#7f8c8d',
+    fontSize: '1rem',
+    margin: 0
+  };
+
+  const errorStyle = {
+    backgroundColor: '#fee',
+    color: '#c0392b',
+    padding: '16px',
+    borderRadius: '8px',
+    marginBottom: '24px',
+    borderLeft: '4px solid #e74c3c',
+    fontSize: '0.9rem'
+  };
+
+  const successStyle = {
+    backgroundColor: '#d5f4e6',
+    color: '#27ae60',
+    padding: '16px',
+    borderRadius: '8px',
+    marginBottom: '24px',
+    borderLeft: '4px solid #2ecc71',
+    fontSize: '0.9rem'
+  };
+
+  const formGroupStyle = {
+    marginBottom: '24px'
+  };
+
+  const labelStyle = {
+    display: 'block',
+    marginBottom: '8px',
+    fontWeight: '500',
+    color: '#34495e',
+    fontSize: '1rem'
+  };
+
+  const inputStyle = {
+    width: '100%',
+    padding: '16px',
+    border: '2px solid #e0e6ed',
+    borderRadius: '8px',
+    fontSize: '1rem',
+    transition: 'all 0.3s ease',
+    boxSizing: 'border-box'
+  };
+
+  const inputFocusStyle = {
+    outline: 'none',
+    borderColor: '#3498db',
+    boxShadow: '0 0 0 3px rgba(52, 152, 219, 0.1)'
+  };
+
+  const inputDisabledStyle = {
+    backgroundColor: '#f8f9fa',
+    cursor: 'not-allowed'
+  };
+
+  const submitButtonStyle = {
+    width: '100%',
+    padding: '18px',
+    backgroundColor: loading ? '#95a5a6' : '#3498db',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '1rem',
+    cursor: loading ? 'not-allowed' : 'pointer',
+    fontWeight: '600',
+    transition: 'all 0.3s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px'
+  };
+
+  const submitButtonHoverStyle = {
+    backgroundColor: '#2980b9',
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 12px rgba(52, 152, 219, 0.3)'
+  };
+
+  const spinnerStyle = {
+    width: '16px',
+    height: '16px',
+    border: '2px solid rgba(255,255,255,0.3)',
+    borderTop: '2px solid white',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite'
+  };
+
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: 'calc(100vh - 120px)',
-      padding: 'clamp(16px, 3vw, 32px)',
-      backgroundColor: '#f5f7fa'
-    }}>
-      <div style={{
-        background: 'white',
-        padding: 'clamp(20px, 4vw, 40px)',
-        borderRadius: '16px',
-        boxShadow: '0 10px 40px rgba(0,0,0,0.08)',
-        width: '100%',
-        maxWidth: '500px',
-        transition: 'transform 0.3s ease',
-        '&:hover': {
-          transform: 'translateY(-2px)'
-        }
-      }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: 'clamp(24px, 4vw, 32px)'
-        }}>
-          <div style={{
-            width: '60px',
-            height: '60px',
-            backgroundColor: '#3498db',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px',
-            fontSize: '24px',
-            color: 'white'
-          }}>
+    <div style={containerStyle}>
+      <div style={formContainerStyle}>
+        <div style={headerStyle}>
+          <div style={iconStyle}>
             🔒
           </div>
-          <h2 style={{ 
-            margin: '0 0 8px 0',
-            color: '#2c3e50',
-            fontSize: 'clamp(1.5rem, 3vw, 1.8rem)',
-            fontWeight: '600'
-          }}>
+          <h2 style={titleStyle}>
             Change Password
           </h2>
-          <p style={{
-            color: '#7f8c8d',
-            fontSize: 'clamp(0.9rem, 1.5vw, 1rem)',
-            margin: 0
-          }}>
+          <p style={subtitleStyle}>
             Update your password to keep your account secure
           </p>
         </div>
         
         {error && (
-          <div style={{
-            backgroundColor: '#fee',
-            color: '#c0392b',
-            padding: 'clamp(12px, 2vw, 16px)',
-            borderRadius: '8px',
-            marginBottom: 'clamp(16px, 3vw, 24px)',
-            borderLeft: '4px solid #e74c3c',
-            fontSize: 'clamp(0.85rem, 1.5vw, 0.9rem)'
-          }}>
+          <div style={errorStyle}>
             ⚠️ {error}
           </div>
         )}
         
         {success && (
-          <div style={{
-            backgroundColor: '#d5f4e6',
-            color: '#27ae60',
-            padding: 'clamp(12px, 2vw, 16px)',
-            borderRadius: '8px',
-            marginBottom: 'clamp(16px, 3vw, 24px)',
-            borderLeft: '4px solid #2ecc71',
-            fontSize: 'clamp(0.85rem, 1.5vw, 0.9rem)'
-          }}>
+          <div style={successStyle}>
             ✅ {success}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: 'clamp(16px, 3vw, 24px)' }}>
-            <label htmlFor="currentPassword" style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: '500',
-              color: '#34495e',
-              fontSize: 'clamp(0.9rem, 1.5vw, 1rem)'
-            }}>
+          <div style={formGroupStyle}>
+            <label htmlFor="currentPassword" style={labelStyle}>
               Current Password
             </label>
             <div style={{ position: 'relative' }}>
@@ -202,36 +274,25 @@ const ChangePassword = () => {
                 required
                 disabled={loading}
                 style={{
-                  width: '100%',
-                  padding: 'clamp(12px, 2vw, 16px)',
-                  border: '2px solid #e0e6ed',
-                  borderRadius: '8px',
-                  fontSize: 'clamp(0.95rem, 1.5vw, 1rem)',
-                  transition: 'all 0.3s ease',
-                  boxSizing: 'border-box',
-                  '&:focus': {
-                    outline: 'none',
-                    borderColor: '#3498db',
-                    boxShadow: '0 0 0 3px rgba(52, 152, 219, 0.1)'
-                  },
-                  '&:disabled': {
-                    backgroundColor: '#f8f9fa',
-                    cursor: 'not-allowed'
-                  }
+                  ...inputStyle,
+                  ...(loading && inputDisabledStyle)
+                }}
+                onFocus={(e) => {
+                  e.target.style.outline = 'none';
+                  e.target.style.borderColor = '#3498db';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(52, 152, 219, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e0e6ed';
+                  e.target.style.boxShadow = 'none';
                 }}
                 placeholder="Enter your current password"
               />
             </div>
           </div>
 
-          <div style={{ marginBottom: 'clamp(16px, 3vw, 24px)' }}>
-            <label htmlFor="newPassword" style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: '500',
-              color: '#34495e',
-              fontSize: 'clamp(0.9rem, 1.5vw, 1rem)'
-            }}>
+          <div style={formGroupStyle}>
+            <label htmlFor="newPassword" style={labelStyle}>
               New Password
             </label>
             <div style={{ position: 'relative' }}>
@@ -244,22 +305,17 @@ const ChangePassword = () => {
                 required
                 disabled={loading}
                 style={{
-                  width: '100%',
-                  padding: 'clamp(12px, 2vw, 16px)',
-                  border: '2px solid #e0e6ed',
-                  borderRadius: '8px',
-                  fontSize: 'clamp(0.95rem, 1.5vw, 1rem)',
-                  transition: 'all 0.3s ease',
-                  boxSizing: 'border-box',
-                  '&:focus': {
-                    outline: 'none',
-                    borderColor: '#3498db',
-                    boxShadow: '0 0 0 3px rgba(52, 152, 219, 0.1)'
-                  },
-                  '&:disabled': {
-                    backgroundColor: '#f8f9fa',
-                    cursor: 'not-allowed'
-                  }
+                  ...inputStyle,
+                  ...(loading && inputDisabledStyle)
+                }}
+                onFocus={(e) => {
+                  e.target.style.outline = 'none';
+                  e.target.style.borderColor = '#3498db';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(52, 152, 219, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e0e6ed';
+                  e.target.style.boxShadow = 'none';
                 }}
                 placeholder="Enter new password (8-16 characters)"
               />
@@ -274,13 +330,13 @@ const ChangePassword = () => {
                   marginBottom: '4px'
                 }}>
                   <span style={{
-                    fontSize: 'clamp(0.8rem, 1.5vw, 0.85rem)',
+                    fontSize: '0.85rem',
                     color: '#7f8c8d'
                   }}>
                     Password Strength:
                   </span>
                   <span style={{
-                    fontSize: 'clamp(0.8rem, 1.5vw, 0.85rem)',
+                    fontSize: '0.85rem',
                     color: getStrengthColor(passwordStrength),
                     fontWeight: '600'
                   }}>
@@ -302,7 +358,7 @@ const ChangePassword = () => {
                 </div>
                 <div style={{
                   marginTop: '8px',
-                  fontSize: 'clamp(0.75rem, 1.5vw, 0.8rem)',
+                  fontSize: '0.8rem',
                   color: '#7f8c8d',
                   display: 'flex',
                   flexWrap: 'wrap',
@@ -337,14 +393,8 @@ const ChangePassword = () => {
             )}
           </div>
 
-          <div style={{ marginBottom: 'clamp(24px, 4vw, 32px)' }}>
-            <label htmlFor="confirmPassword" style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: '500',
-              color: '#34495e',
-              fontSize: 'clamp(0.9rem, 1.5vw, 1rem)'
-            }}>
+          <div style={formGroupStyle}>
+            <label htmlFor="confirmPassword" style={labelStyle}>
               Confirm New Password
             </label>
             <div style={{ position: 'relative' }}>
@@ -357,24 +407,20 @@ const ChangePassword = () => {
                 required
                 disabled={loading}
                 style={{
-                  width: '100%',
-                  padding: 'clamp(12px, 2vw, 16px)',
-                  border: '2px solid #e0e6ed',
-                  borderRadius: '8px',
-                  fontSize: 'clamp(0.95rem, 1.5vw, 1rem)',
-                  transition: 'all 0.3s ease',
-                  boxSizing: 'border-box',
-                  '&:focus': {
-                    outline: 'none',
-                    borderColor: formData.newPassword === formData.confirmPassword ? '#2ecc71' : '#e74c3c',
-                    boxShadow: formData.newPassword === formData.confirmPassword 
-                      ? '0 0 0 3px rgba(46, 204, 113, 0.1)'
-                      : '0 0 0 3px rgba(231, 76, 60, 0.1)'
-                  },
-                  '&:disabled': {
-                    backgroundColor: '#f8f9fa',
-                    cursor: 'not-allowed'
-                  }
+                  ...inputStyle,
+                  ...(loading && inputDisabledStyle),
+                  borderColor: formData.confirmPassword ? 
+                    (formData.newPassword === formData.confirmPassword ? '#2ecc71' : '#e74c3c') : 
+                    '#e0e6ed'
+                }}
+                onFocus={(e) => {
+                  e.target.style.outline = 'none';
+                  e.target.style.boxShadow = formData.newPassword === formData.confirmPassword 
+                    ? '0 0 0 3px rgba(46, 204, 113, 0.1)'
+                    : '0 0 0 3px rgba(231, 76, 60, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.boxShadow = 'none';
                 }}
                 placeholder="Confirm your new password"
               />
@@ -384,7 +430,7 @@ const ChangePassword = () => {
                   right: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  fontSize: 'clamp(0.9rem, 1.5vw, 1rem)',
+                  fontSize: '1rem',
                   color: formData.newPassword === formData.confirmPassword ? '#2ecc71' : '#e74c3c'
                 }}>
                   {formData.newPassword === formData.confirmPassword ? '✓' : '✗'}
@@ -396,41 +442,25 @@ const ChangePassword = () => {
           <button 
             type="submit" 
             disabled={loading}
-            style={{
-              width: '100%',
-              padding: 'clamp(14px, 2.5vw, 18px)',
-              backgroundColor: loading ? '#95a5a6' : '#3498db',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: 'clamp(0.95rem, 1.5vw, 1rem)',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              fontWeight: '600',
-              transition: 'all 0.3s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              '&:hover:not(:disabled)': {
-                backgroundColor: '#2980b9',
-                transform: 'translateY(-1px)',
-                boxShadow: '0 4px 12px rgba(52, 152, 219, 0.3)'
-              },
-              '&:active:not(:disabled)': {
-                transform: 'translateY(0)'
+            style={submitButtonStyle}
+            onMouseEnter={(e) => {
+              if (!loading) {
+                e.target.style.backgroundColor = '#2980b9';
+                e.target.style.transform = 'translateY(-1px)';
+                e.target.style.boxShadow = '0 4px 12px rgba(52, 152, 219, 0.3)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!loading) {
+                e.target.style.backgroundColor = '#3498db';
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = 'none';
               }
             }}
           >
             {loading ? (
               <>
-                <span style={{
-                  width: '16px',
-                  height: '16px',
-                  border: '2px solid rgba(255,255,255,0.3)',
-                  borderTop: '2px solid white',
-                  borderRadius: '50%',
-                  animation: 'spin 1s linear infinite'
-                }} />
+                <div style={spinnerStyle} />
                 Changing Password...
               </>
             ) : (
@@ -439,32 +469,34 @@ const ChangePassword = () => {
           </button>
         </form>
 
-        <style jsx>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-          
-          @media (max-width: 768px) {
-            div {
-              padding: 20px !important;
+        <style>
+          {`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
             }
             
-            input {
-              font-size: 16px !important; /* Prevent zoom on iOS */
-            }
-          }
-          
-          @media (max-width: 480px) {
-            div {
-              padding: 16px !important;
+            @media (max-width: 768px) {
+              .form-container {
+                padding: 20px !important;
+              }
+              
+              input {
+                font-size: 16px !important;
+              }
             }
             
-            h2 {
-              font-size: 1.3rem !important;
+            @media (max-width: 480px) {
+              .form-container {
+                padding: 16px !important;
+              }
+              
+              h2 {
+                font-size: 1.3rem !important;
+              }
             }
-          }
-        `}</style>
+          `}
+        </style>
       </div>
     </div>
   );

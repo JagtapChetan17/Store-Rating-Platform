@@ -21,6 +21,10 @@ router.post('/login', validateUserLogin, login);
 // @route   PUT /api/auth/change-password
 // @desc    Change password
 // @access  Private
-router.put('/change-password', auth(), validateChangePassword, changePassword);
+router.put('/change-password', auth(), validateChangePassword, (req, res, next) => {
+  console.log('Change password route hit');
+  console.log('User from auth middleware:', req.user);
+  next();
+}, changePassword);
 
 module.exports = router;

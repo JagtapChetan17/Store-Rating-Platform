@@ -15,7 +15,7 @@ const User = {
 
   findByEmail: async (email) => {
     try {
-      const query = 'SELECT * FROM users WHERE email = ?';
+      const query = 'SELECT id, name, email, password, address, role, created_at FROM users WHERE email = ?';
       const [rows] = await db.execute(query, [email]);
       return rows;
     } catch (error) {
@@ -26,7 +26,7 @@ const User = {
 
   findById: async (id) => {
     try {
-      const query = 'SELECT id, name, email, address, role, created_at FROM users WHERE id = ?';
+      const query = 'SELECT id, name, email, password, address, role, created_at FROM users WHERE id = ?';
       const [rows] = await db.execute(query, [id]);
       return rows;
     } catch (error) {
@@ -38,14 +38,18 @@ const User = {
   updatePassword: async (id, password) => {
     try {
       console.log('Executing update password query for user:', id);
-      const query = 'UPDATE users SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?';
+      const query = 'UPDATE users SET password = ?, updated_at = NOW() WHERE id = ?';
       const [result] = await db.execute(query, [password, id]);
-      console.log('Update password result:', result);
+      console.log('Update password result:', {
+        affectedRows: result.affectedRows,
+        changedRows: result.changedRows
+      });
       return result;
     } catch (error) {
       console.error('User.updatePassword error:', error.message);
-      console.error('SQL Query:', query);
-      console.error('Parameters:', [password, id]);
+      console.error('SQL Error Code:', error.code);
+      console.error('SQL Error Number:', error.errno);
+      console.error('Full error:', error);
       throw error;
     }
   },
