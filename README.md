@@ -1,7 +1,3 @@
-Got it ✅ — here’s your **full updated README.md** file with the **live frontend link** included, following the Watchflix style you liked:
-
----
-
 # Store Rating Platform (React + Express + MySQL)
 
 Full-stack store rating application where users can register, log in, browse stores, and submit ratings (1–5).
@@ -13,6 +9,43 @@ Supports **role-based authentication** for **Admins, Normal Users, and Store Own
 
 * **Frontend (Live):** [Store Rating Platform](https://store-rating-platform-eight.vercel.app/login)
 * **Admin / Backend (Hosted):** *add link here if deployed*
+* **Demo Video:** [📹 Watch Demo](https://drive.google.com/file/d/16T3tsmsUUse88c6B6SsBK1kZwL32lL1g/view?usp=sharing)
+
+⚠️ **Note:** It may take up to **72 hours** for the hosted database to be fully activated.
+Meanwhile, you can **download and run the project locally** following the setup steps below.
+
+---
+
+## Test Login Credentials
+
+Use the following test accounts to explore role-based features:
+
+**Admin**
+
+```json
+{
+  "email": "admin@gmail.com",
+  "password": "Admin@1711"
+}
+```
+
+**Store Owner**
+
+```json
+{
+  "email": "Sahil@gmail.com",
+  "password": "Sahil@1234"
+}
+```
+
+**Normal User**
+
+```json
+{
+  "email": "yash@gmail.com",
+  "password": "Yash@1234"
+}
+```
 
 ---
 
@@ -205,6 +238,11 @@ Specify your preferred license (e.g., MIT).
 
 ---
 
-⚡ Done! This is **copy-paste ready** for your repo.
+✅ Now your README has:
 
-Do you also want me to prepare a small **`.env.example` file** (backend + frontend) so recruiters/testers can set up faster?
+* Live link
+* Demo video link
+* Database delay note
+* Login details (Admin, Owner, User)
+
+Do you also want me to create a **`.env.example` file** separately so others can set up faster?
