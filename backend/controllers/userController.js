@@ -1,4 +1,3 @@
-// backend/controllers/userController.js
 const Store = require('../models/Store');
 const Rating = require('../models/Rating');
 
@@ -15,7 +14,7 @@ const getStores = async (req, res) => {
     
     res.json(stores);
   } catch (error) {
-    console.error(error.message);
+    console.error('Get stores error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -25,10 +24,23 @@ const submitRating = async (req, res) => {
     const { store_id, rating } = req.body;
     const user_id = req.user.id;
 
+    // Check if store exists
+    const store = await Store.getById(store_id);
+    if (store.length === 0) {
+      return res.status(404).json({ message: 'Store not found' });
+    }
+
     await Rating.createOrUpdate({ user_id, store_id, rating });
-    res.json({ message: 'Rating submitted successfully' });
+    
+    // Get updated rating
+    const updatedRating = await Rating.getUserRating(user_id, store_id);
+    
+    res.json({ 
+      message: 'Rating submitted successfully',
+      rating: updatedRating[0]
+    });
   } catch (error) {
-    console.error(error.message);
+    console.error('Submit rating error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -41,7 +53,7 @@ const getUserRating = async (req, res) => {
     const ratings = await Rating.getUserRating(user_id, store_id);
     res.json(ratings.length > 0 ? ratings[0] : { rating: null });
   } catch (error) {
-    console.error(error.message);
+    console.error('Get user rating error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };

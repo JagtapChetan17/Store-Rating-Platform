@@ -1,4 +1,3 @@
-// backend/controllers/authController.js
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
@@ -18,7 +17,13 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create user
-    const result = await User.create({ name, email, password: hashedPassword, address, role: 'user' });
+    const result = await User.create({ 
+      name, 
+      email, 
+      password: hashedPassword, 
+      address, 
+      role: 'user' 
+    });
 
     // Generate JWT token
     const payload = {
@@ -31,14 +36,22 @@ const register = async (req, res) => {
 
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'your_jwt_secret',
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    res.status(201).json({ token });
+    res.status(201).json({ 
+      token,
+      user: {
+        id: result.insertId,
+        name,
+        email,
+        role: 'user'
+      }
+    });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server error');
+    console.error('Register error:', error.message);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -71,7 +84,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'your_jwt_secret',
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
@@ -85,8 +98,8 @@ const login = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server error');
+    console.error('Login error:', error.message);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -94,6 +107,26 @@ const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
     const userId = req.user.id;
+
+    // Validate input
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ 
+        message: 'Current password and new password are required' 
+      });
+    }
+
+    // Validate new password
+    if (newPassword.length < 8 || newPassword.length > 16) {
+      return res.status(400).json({ 
+        message: 'New password must be between 8 and 16 characters' 
+      });
+    }
+
+    if (!/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(newPassword)) {
+      return res.status(400).json({ 
+        message: 'New password must contain at least one uppercase letter and one special character' 
+      });
+    }
 
     const users = await User.findById(userId);
     if (users.length === 0) {
@@ -117,8 +150,8 @@ const changePassword = async (req, res) => {
     
     res.json({ message: 'Password updated successfully' });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server error');
+    console.error('Change password error:', error.message);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 

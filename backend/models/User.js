@@ -1,4 +1,3 @@
-// backend/models/user.js
 const db = require('../config/database');
 
 const User = {
@@ -22,7 +21,7 @@ const User = {
   },
 
   updatePassword: async (id, password) => {
-    const query = 'UPDATE users SET password = ? WHERE id = ?';
+    const query = 'UPDATE users SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?';
     const [result] = await db.execute(query, [password, id]);
     return result;
   },

@@ -1,9 +1,12 @@
-// backend/routes/auth.js
 const express = require('express');
 const router = express.Router();
 const { register, login, changePassword } = require('../controllers/authController');
 const auth = require('../middleware/auth');
-const { validateUserRegistration, validateUserLogin } = require('../middleware/validation');
+const { 
+  validateUserRegistration, 
+  validateUserLogin,
+  validateChangePassword 
+} = require('../middleware/validation');
 
 // @route   POST /api/auth/register
 // @desc    Register user
@@ -18,6 +21,6 @@ router.post('/login', validateUserLogin, login);
 // @route   PUT /api/auth/change-password
 // @desc    Change password
 // @access  Private
-router.put('/change-password', auth(), changePassword);
+router.put('/change-password', auth(), validateChangePassword, changePassword);
 
 module.exports = router;

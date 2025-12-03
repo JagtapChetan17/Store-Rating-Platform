@@ -1,4 +1,3 @@
-// backend/models/store.js
 const db = require('../config/database');
 
 const Store = {
@@ -12,7 +11,8 @@ const Store = {
   getAll: async (filters) => {
     let query = `
       SELECT s.*, u.name as owner_name, 
-      COALESCE(AVG(r.rating), 0) as average_rating 
+      COALESCE(AVG(r.rating), 0) as average_rating,
+      COUNT(r.id) as total_ratings
       FROM stores s 
       LEFT JOIN users u ON s.owner_id = u.id 
       LEFT JOIN ratings r ON s.id = r.store_id 
@@ -44,7 +44,8 @@ const Store = {
   getById: async (id) => {
     const query = `
       SELECT s.*, u.name as owner_name, 
-      COALESCE(AVG(r.rating), 0) as average_rating 
+      COALESCE(AVG(r.rating), 0) as average_rating,
+      COUNT(r.id) as total_ratings
       FROM stores s 
       LEFT JOIN users u ON s.owner_id = u.id 
       LEFT JOIN ratings r ON s.id = r.store_id 
@@ -63,7 +64,8 @@ const Store = {
 
   search: async (searchTerm) => {
     const query = `
-      SELECT s.*, COALESCE(AVG(r.rating), 0) as average_rating 
+      SELECT s.*, COALESCE(AVG(r.rating), 0) as average_rating,
+      COUNT(r.id) as total_ratings
       FROM stores s 
       LEFT JOIN ratings r ON s.id = r.store_id 
       WHERE s.name LIKE ? OR s.address LIKE ?

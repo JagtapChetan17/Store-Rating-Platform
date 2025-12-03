@@ -1,4 +1,3 @@
-// backend/models/rating.js
 const db = require('../config/database');
 
 const Rating = {
@@ -7,7 +6,7 @@ const Rating = {
     const query = `
       INSERT INTO ratings (user_id, store_id, rating) 
       VALUES (?, ?, ?) 
-      ON DUPLICATE KEY UPDATE rating = ?
+      ON DUPLICATE KEY UPDATE rating = ?, updated_at = CURRENT_TIMESTAMP
     `;
     const [result] = await db.execute(query, [user_id, store_id, rating, rating]);
     return result;
@@ -36,7 +35,8 @@ const Rating = {
       SELECT 
         (SELECT COUNT(*) FROM users) as total_users,
         (SELECT COUNT(*) FROM stores) as total_stores,
-        (SELECT COUNT(*) FROM ratings) as total_ratings
+        (SELECT COUNT(*) FROM ratings) as total_ratings,
+        (SELECT COUNT(DISTINCT store_id) FROM ratings) as rated_stores
     `;
     const [rows] = await db.execute(query);
     return rows;
