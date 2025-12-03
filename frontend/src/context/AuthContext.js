@@ -61,18 +61,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    delete authAPI.defaults.headers.common['Authorization'];
-    setCurrentUser(null);
-  };
-
   const changePassword = async (passwordData) => {
     try {
-      await authAPI.put('/auth/change-password', passwordData);
-      return { success: true, message: 'Password changed successfully' };
+      console.log('Changing password with data:', { ...passwordData, newPassword: '***' });
+      const response = await authAPI.put('/auth/change-password', passwordData);
+      console.log('Change password response:', response.data);
+      return { 
+        success: true, 
+        message: response.data.message || 'Password changed successfully' 
+      };
     } catch (error) {
+      console.error('Change password error:', error);
       return { 
         success: false, 
         message: error.response?.data?.message || 'Password change failed' 
@@ -80,12 +79,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    delete authAPI.defaults.headers.common['Authorization'];
+    setCurrentUser(null);
+  };
+
   const value = {
     currentUser,
     login,
     register,
-    logout,
-    changePassword
+    changePassword,
+    logout
   };
 
   return (
