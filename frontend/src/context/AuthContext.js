@@ -1,4 +1,3 @@
-// frontend/src/contexts/AuthContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authAPI } from '../services/api';
 
@@ -13,7 +12,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on app load
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
     
@@ -35,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       authAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setCurrentUser(user);
       
-      return { success: true };
+      return { success: true, user };
     } catch (error) {
       return { 
         success: false, 
@@ -47,17 +45,14 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await authAPI.post('/auth/register', userData);
-      const { token } = response.data;
+      const { token, user } = response.data;
       
       localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       authAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setCurrentUser(user);
       
-      // After registration, we need to get user details
-      const userResponse = await authAPI.get('/users/me');
-      setCurrentUser(userResponse.data);
-      localStorage.setItem('user', JSON.stringify(userResponse.data));
-      
-      return { success: true };
+      return { success: true, user };
     } catch (error) {
       return { 
         success: false, 

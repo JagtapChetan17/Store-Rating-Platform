@@ -1,7 +1,5 @@
-// frontend/src/components/Admin/StoreForm.js
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/api';
-import '../../styles/App.css';
 
 const StoreForm = ({ onCancel, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -55,15 +53,53 @@ const StoreForm = ({ onCancel, onSuccess }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <h2>Add New Store</h2>
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 1000
+    }}>
+      <div style={{
+        background: 'white',
+        padding: '2rem',
+        borderRadius: '8px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+        width: '100%',
+        maxWidth: '500px',
+        maxHeight: '90vh',
+        overflowY: 'auto'
+      }}>
+        <h2 style={{ marginTop: 0, color: '#2c3e50' }}>
+          Add New Store
+        </h2>
         
-        {error && <div className="error-message">{error}</div>}
+        {error && (
+          <div style={{
+            backgroundColor: '#f8d7da',
+            color: '#721c24',
+            padding: '0.75rem',
+            borderRadius: '4px',
+            marginBottom: '1rem'
+          }}>
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Store Name</label>
+          <div style={{ marginBottom: '1rem' }}>
+            <label htmlFor="name" style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: '500'
+            }}>
+              Store Name
+            </label>
             <input
               type="text"
               id="name"
@@ -72,11 +108,24 @@ const StoreForm = ({ onCancel, onSuccess }) => {
               onChange={handleChange}
               required
               maxLength="60"
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                fontSize: '1rem'
+              }}
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="email">Store Email</label>
+          <div style={{ marginBottom: '1rem' }}>
+            <label htmlFor="email" style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: '500'
+            }}>
+              Store Email
+            </label>
             <input
               type="email"
               id="email"
@@ -84,11 +133,24 @@ const StoreForm = ({ onCancel, onSuccess }) => {
               value={formData.email}
               onChange={handleChange}
               required
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                fontSize: '1rem'
+              }}
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="address">Address</label>
+          <div style={{ marginBottom: '1rem' }}>
+            <label htmlFor="address" style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: '500'
+            }}>
+              Address
+            </label>
             <textarea
               id="address"
               name="address"
@@ -97,17 +159,38 @@ const StoreForm = ({ onCancel, onSuccess }) => {
               required
               rows="3"
               maxLength="400"
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                fontSize: '1rem',
+                resize: 'vertical'
+              }}
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="owner_id">Store Owner</label>
+          <div style={{ marginBottom: '1rem' }}>
+            <label htmlFor="owner_id" style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: '500'
+            }}>
+              Store Owner
+            </label>
             <select
               id="owner_id"
               name="owner_id"
               value={formData.owner_id}
               onChange={handleChange}
               required
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                fontSize: '1rem'
+              }}
             >
               <option value="">Select Owner</option>
               {owners.map(owner => (
@@ -118,18 +201,39 @@ const StoreForm = ({ onCancel, onSuccess }) => {
             </select>
           </div>
 
-          <div className="form-actions">
+          <div style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: '1rem',
+            marginTop: '1.5rem'
+          }}>
             <button 
               type="button" 
               onClick={onCancel}
-              className="btn-secondary"
+              style={{
+                backgroundColor: '#95a5a6',
+                color: 'white',
+                border: 'none',
+                padding: '0.75rem 1.5rem',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '1rem'
+              }}
             >
               Cancel
             </button>
             <button 
               type="submit" 
               disabled={loading}
-              className="btn-primary"
+              style={{
+                backgroundColor: '#3498db',
+                color: 'white',
+                border: 'none',
+                padding: '0.75rem 1.5rem',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '1rem'
+              }}
             >
               {loading ? 'Creating...' : 'Create Store'}
             </button>

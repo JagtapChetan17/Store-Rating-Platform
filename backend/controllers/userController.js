@@ -12,7 +12,17 @@ const getStores = async (req, res) => {
       stores = await Store.getAll({});
     }
     
-    res.json(stores);
+    // Get user's rating for each store
+    const user_id = req.user.id;
+    const storesWithUserRating = await Promise.all(stores.map(async (store) => {
+      const userRating = await Rating.getUserRating(user_id, store.id);
+      return {
+        ...store,
+        user_rating: userRating.length > 0 ? userRating[0].rating : null
+      };
+    }));
+    
+    res.json(storesWithUserRating);
   } catch (error) {
     console.error('Get stores error:', error.message);
     res.status(500).json({ message: 'Server error' });

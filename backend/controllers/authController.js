@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 const register = async (req, res) => {
   try {
-    const { name, email, password, address } = req.body;
+    const { name, email, password, address, role = 'user' } = req.body;
 
     // Check if user already exists
     const existingUsers = await User.findByEmail(email);
@@ -22,36 +22,47 @@ const register = async (req, res) => {
       email, 
       password: hashedPassword, 
       address, 
-      role: 'user' 
+      role 
     });
+
+    if (!result || !result.insertId) {
+      return res.status(500).json({ message: 'Failed to create user' });
+    }
 
     // Generate JWT token
     const payload = {
       user: {
         id: result.insertId,
         email,
-        role: 'user'
+        role: role
       }
     };
 
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'your_jwt_secret_key_here_change_this_in_production',
       { expiresIn: '7d' }
     );
 
+    // Get user data without password
+    const userData = await User.findById(result.insertId);
+
+    if (!userData || userData.length === 0) {
+      return res.status(500).json({ message: 'Failed to retrieve user data' });
+    }
+
     res.status(201).json({ 
+      success: true,
       token,
-      user: {
-        id: result.insertId,
-        name,
-        email,
-        role: 'user'
-      }
+      user: userData[0]
     });
   } catch (error) {
     console.error('Register error:', error.message);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error stack:', error.stack);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error. Please try again later.' 
+    });
   }
 };
 
@@ -59,10 +70,21 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Email and password are required' 
+      });
+    }
+
     // Check if user exists
     const users = await User.findByEmail(email);
     if (users.length === 0) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ 
+        success: false,
+        message: 'Invalid credentials' 
+      });
     }
 
     const user = users[0];
@@ -70,7 +92,10 @@ const login = async (req, res) => {
     // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ 
+        success: false,
+        message: 'Invalid credentials' 
+      });
     }
 
     // Generate JWT token
@@ -84,22 +109,25 @@ const login = async (req, res) => {
 
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'your_jwt_secret_key_here_change_this_in_production',
       { expiresIn: '7d' }
     );
 
+    // Remove password from user object
+    const { password: _, ...userWithoutPassword } = user;
+
     res.json({ 
+      success: true,
       token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      }
+      user: userWithoutPassword
     });
   } catch (error) {
     console.error('Login error:', error.message);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error stack:', error.stack);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error. Please try again later.' 
+    });
   }
 };
 
@@ -108,9 +136,12 @@ const changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
     const userId = req.user.id;
 
+    console.log('Change password request received for user:', userId);
+
     // Validate input
     if (!currentPassword || !newPassword) {
       return res.status(400).json({ 
+        success: false,
         message: 'Current password and new password are required' 
       });
     }
@@ -118,40 +149,70 @@ const changePassword = async (req, res) => {
     // Validate new password
     if (newPassword.length < 8 || newPassword.length > 16) {
       return res.status(400).json({ 
+        success: false,
         message: 'New password must be between 8 and 16 characters' 
       });
     }
 
     if (!/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(newPassword)) {
       return res.status(400).json({ 
+        success: false,
         message: 'New password must contain at least one uppercase letter and one special character' 
       });
     }
 
+    // Get user from database
     const users = await User.findById(userId);
-    if (users.length === 0) {
-      return res.status(404).json({ message: 'User not found' });
+    if (!users || users.length === 0) {
+      console.error('User not found in database for ID:', userId);
+      return res.status(404).json({ 
+        success: false,
+        message: 'User not found' 
+      });
     }
 
     const user = users[0];
+    console.log('User found:', user.email);
 
     // Verify current password
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Current password is incorrect' });
+      return res.status(400).json({ 
+        success: false,
+        message: 'Current password is incorrect' 
+      });
     }
 
     // Hash new password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
+    console.log('Updating password for user:', userId);
+
     // Update password
-    await User.updatePassword(userId, hashedPassword);
+    const result = await User.updatePassword(userId, hashedPassword);
     
-    res.json({ message: 'Password updated successfully' });
+    if (!result) {
+      console.error('Failed to update password in database');
+      return res.status(500).json({ 
+        success: false,
+        message: 'Failed to update password' 
+      });
+    }
+
+    console.log('Password updated successfully for user:', userId);
+    
+    res.json({ 
+      success: true,
+      message: 'Password updated successfully' 
+    });
   } catch (error) {
     console.error('Change password error:', error.message);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error stack:', error.stack);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error. Please try again later.' 
+    });
   }
 };
 

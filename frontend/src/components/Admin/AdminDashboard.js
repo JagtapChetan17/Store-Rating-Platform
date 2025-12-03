@@ -1,10 +1,8 @@
-// frontend/src/components/Admin/AdminDashboard.js (updated)
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/api';
 import UserManagement from './UserManagement';
-import StoreManagement from './StoreManagement'; // Add this import
+import StoreManagement from './StoreManagement';
 import DashboardStats from './DashboardStats';
-import '../../styles/App.css';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -33,38 +31,72 @@ const AdminDashboard = () => {
       case 'users':
         return <UserManagement />;
       case 'stores':
-        return <StoreManagement />; // Add this case
+        return <StoreManagement />;
       default:
         return null;
     }
   };
 
   return (
-    <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
+    <div style={{
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: '2rem'
+    }}>
+      <h1 style={{ color: '#2c3e50', marginBottom: '2rem' }}>
+        Admin Dashboard
+      </h1>
       
-      <div className="admin-tabs">
+      <div style={{
+        display: 'flex',
+        borderBottom: '1px solid #ddd',
+        marginBottom: '2rem'
+      }}>
         <button 
-          className={activeTab === 'dashboard' ? 'active' : ''}
+          style={{
+            padding: '1rem 2rem',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: activeTab === 'dashboard' ? '#3498db' : '#7f8c8d',
+            borderBottom: `3px solid ${activeTab === 'dashboard' ? '#3498db' : 'transparent'}`
+          }}
           onClick={() => setActiveTab('dashboard')}
         >
           Dashboard
         </button>
         <button 
-          className={activeTab === 'users' ? 'active' : ''}
+          style={{
+            padding: '1rem 2rem',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: activeTab === 'users' ? '#3498db' : '#7f8c8d',
+            borderBottom: `3px solid ${activeTab === 'users' ? '#3498db' : 'transparent'}`
+          }}
           onClick={() => setActiveTab('users')}
         >
           User Management
         </button>
         <button 
-          className={activeTab === 'stores' ? 'active' : ''}
-          onClick={() => setActiveTab('stores')} // Add this button
+          style={{
+            padding: '1rem 2rem',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: activeTab === 'stores' ? '#3498db' : '#7f8c8d',
+            borderBottom: `3px solid ${activeTab === 'stores' ? '#3498db' : 'transparent'}`
+          }}
+          onClick={() => setActiveTab('stores')}
         >
           Store Management
         </button>
       </div>
 
-      <div className="tab-content">
+      <div style={{ minHeight: '400px' }}>
         {renderTabContent()}
       </div>
     </div>
