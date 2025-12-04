@@ -8,9 +8,9 @@ Full-stack store rating application where users can register, log in, browse sto
 
 ## Demo / Live Links
 
-* **Frontend (Live):** Store Rating Platform
-* **Admin / Backend (Hosted):** add link here if deployed
-* **Demo Video:** 📹 Watch Demo
+* **Frontend (Live):** https://store-rating-platform-eight.vercel.app/
+* **Admin / Backend (Hosted):** https://store-rating-platform-gc3l.onrender.com
+* **Demo Video:** 📹 Watch Demo https://drive.google.com/file/d/16T3tsmsUUse88c6B6SsBK1kZwL32lL1g/view?usp=sharing
 
 > ⚠️ **Note:** The hosted database is valid for **30 days only** and will expire on **04 January 2026**. After this date, the database service will be automatically deactivated. Meanwhile, you can download and run the project locally by following the setup steps below.
 
