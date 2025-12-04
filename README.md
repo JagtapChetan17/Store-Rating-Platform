@@ -11,8 +11,7 @@ Supports **role-based authentication** for **Admins, Normal Users, and Store Own
 * **Admin / Backend (Hosted):** *add link here if deployed*
 * **Demo Video:** [📹 Watch Demo](https://drive.google.com/file/d/16T3tsmsUUse88c6B6SsBK1kZwL32lL1g/view?usp=sharing)
 
-⚠️ **Note:** It may take up to **72 hours** for the hosted database to be fully activated.
-Meanwhile, you can **download and run the project locally** following the setup steps below.
+⚠️ **Note:** The hosted database is valid for **30 days** only and will expire on [04 January 2026]. After this date, the database service will be automatically deactivated. Meanwhile, you can **download and run the project locally** by following the setup steps below.
 
 ---
 
@@ -24,7 +23,7 @@ Use the following test accounts to explore role-based features:
 
 ```json
 {
-  "email": "admin@gmail.com",
+  "email": "admin@gstore.com",
   "password": "Admin@1711"
 }
 ```
@@ -33,8 +32,8 @@ Use the following test accounts to explore role-based features:
 
 ```json
 {
-  "email": "Sahil@gmail.com",
-  "password": "Sahil@1234"
+  "email": "Sahil@store.com",
+  "password": "Sahil@1711"
 }
 ```
 
@@ -42,8 +41,8 @@ Use the following test accounts to explore role-based features:
 
 ```json
 {
-  "email": "yash@gmail.com",
-  "password": "Yash@1234"
+  "email": "yash@store.com",
+  "password": "Yash@1711"
 }
 ```
 
