@@ -1,17 +1,24 @@
-# Store Rating Platform (React + Express + MySQL)
+# Store Rating Platform (React + Express + MySQL) — Roxiler Systems
 
-Full-stack store rating application where users can register, log in, browse stores, and submit ratings (1–5).
-Supports **role-based authentication** for **Admins, Normal Users, and Store Owners**, with dashboards and CRUD functionalities.
+**Assignment for:** Full Stack Development Internship (Roxiler Systems)
+
+Full-stack store rating application where users can register, log in, browse stores, and submit ratings (1–5). Supports role-based authentication for Admins, Normal Users, and Store Owners, with dashboards and CRUD functionalities.
 
 ---
 
 ## Demo / Live Links
 
-* **Frontend (Live):** [Store Rating Platform](https://store-rating-platform-eight.vercel.app/login)
-* **Admin / Backend (Hosted):** *add link here if deployed*
-* **Demo Video:** [📹 Watch Demo](https://drive.google.com/file/d/16T3tsmsUUse88c6B6SsBK1kZwL32lL1g/view?usp=sharing)
+* **Frontend (Live):** Store Rating Platform
+* **Admin / Backend (Hosted):** add link here if deployed
+* **Demo Video:** 📹 Watch Demo
 
-⚠️ **Note:** The hosted database is valid for **30 days** only and will expire on [04 January 2026]. After this date, the database service will be automatically deactivated. Meanwhile, you can **download and run the project locally** by following the setup steps below.
+> ⚠️ **Note:** The hosted database is valid for **30 days only** and will expire on **04 January 2026**. After this date, the database service will be automatically deactivated. Meanwhile, you can download and run the project locally by following the setup steps below.
+
+---
+
+## Assignment Notice
+
+This project was created as an **assignment from Roxiler Systems** for the **Full Stack Development Internship**. It demonstrates role-based authentication, user and store management, ratings, dashboards, and full frontend–backend integration.
 
 ---
 
@@ -50,34 +57,36 @@ Use the following test accounts to explore role-based features:
 
 ## Table of contents
 
-* [What is Store Rating Platform?](#what-is-store-rating-platform)
-* [Features](#features)
-* [Tech stack](#tech-stack)
-* [Prerequisites](#prerequisites)
-* [Folder structure](#folder-structure)
-* [Setup & Run (Backend)](#setup--run-backend)
-* [Setup & Run (Frontend)](#setup--run-frontend)
-* [Environment variables](#environment-variables)
-* [Building / Release notes](#building--release-notes)
-* [Contributing](#contributing)
-* [Troubleshooting](#troubleshooting)
-* [License](#license)
+* What is Store Rating Platform?
+* Features
+* Tech stack
+* Prerequisites
+* Folder structure
+* Setup & Run (Backend)
+* Setup & Run (Frontend)
+* Environment variables
+* Building / Release notes
+* Contributing
+* Troubleshooting
+* License
 
 ---
 
 ## What is Store Rating Platform?
 
-The **Store Rating Platform** is a web app that allows users to browse stores and submit ratings (1–5).
+The Store Rating Platform is a web app that allows users to browse stores and submit ratings (1–5).
 
 * **Admins** can manage users and stores with a dashboard view of key stats.
 * **Normal Users** can register, log in, browse/search stores, and leave ratings.
 * **Store Owners** can view ratings for their stores and track average performance.
 
+This implementation was completed as the **Roxiler Systems Full Stack Development internship assignment**.
+
 ---
 
 ## Features
 
-* 🔑 **Role-based authentication** (Admin, User, Store Owner)
+* 🔑 Role-based authentication (Admin, User, Store Owner)
 * 👤 User registration & login (JWT-based auth)
 * 🏪 Store management (CRUD operations)
 * ⭐ Rating system (1–5, add/modify ratings)
@@ -174,7 +183,7 @@ npm install
 npm start
 ```
 
-Frontend runs at 👉 `http://localhost:3000`
+Frontend runs at: `http://localhost:3000`
 
 ---
 
@@ -191,7 +200,7 @@ DB_NAME=store_rating
 JWT_SECRET=your_jwt_secret
 ```
 
-**Frontend — frontend/.env (optional)**
+**Frontend — frontend/.env** (optional)
 
 ```
 REACT_APP_API_URL=http://localhost:5000/api
@@ -201,15 +210,14 @@ REACT_APP_API_URL=http://localhost:5000/api
 
 ## Building / Release notes
 
-* For production, build React frontend:
+For production, build the React frontend:
 
 ```bash
 cd frontend
 npm run build
 ```
 
-* Deploy backend to Render/Heroku and frontend to Netlify/Vercel.
-* Ensure `.env` values are set correctly in production.
+Deploy backend to Render/Heroku and frontend to Netlify/Vercel. Ensure .env values are set correctly in production.
 
 ---
 
@@ -225,7 +233,7 @@ npm run build
 
 ## Troubleshooting
 
-* **DB connection failed** → Check `.env` DB credentials and schema.sql import.
+* **DB connection failed** → Check `.env` DB credentials and `schema.sql` import.
 * **Frontend not loading data** → Verify `REACT_APP_API_URL` matches backend.
 * **Auth errors** → Ensure JWT secret matches across backend services.
 
@@ -233,4 +241,4 @@ npm run build
 
 ## License
 
-Specify your preferred license (e.g., MIT).
+Specify your preferred license (e.g., **MIT**).
