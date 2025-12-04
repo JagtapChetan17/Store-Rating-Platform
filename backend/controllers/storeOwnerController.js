@@ -1,4 +1,3 @@
-// backend/controllers/storeOwnerController.js
 const Rating = require('../models/Rating');
 const Store = require('../models/Store');
 
@@ -6,7 +5,6 @@ const getStoreRatings = async (req, res) => {
   try {
     const owner_id = req.user.id;
 
-    // First get the store owned by this user
     const stores = await Store.getByOwnerId(owner_id);
     if (stores.length === 0) {
       return res.status(404).json({ message: 'No store found for this user' });
@@ -14,10 +12,8 @@ const getStoreRatings = async (req, res) => {
 
     const storeId = stores[0].id;
 
-    // Get ratings for this store
     const ratings = await Rating.getStoreRatings(storeId);
 
-    // Get average rating
     const storeDetails = await Store.getById(storeId);
 
     res.json({

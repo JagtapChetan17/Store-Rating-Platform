@@ -6,17 +6,14 @@ const register = async (req, res) => {
   try {
     const { name, email, password, address, role = 'user' } = req.body;
 
-    // Check if user already exists
     const existingUsers = await User.findByEmail(email);
     if (existingUsers.length > 0) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
     const result = await User.create({ 
       name, 
       email, 
@@ -25,7 +22,6 @@ const register = async (req, res) => {
       role 
     });
 
-    // Get the created user with timestamps
     const newUsers = await User.findById(result.insertId);
     const newUser = newUsers[0];
     
@@ -33,7 +29,6 @@ const register = async (req, res) => {
     console.log('Created at:', newUser.created_at);
     console.log('Updated at:', newUser.updated_at);
 
-    // Generate JWT token
     const payload = {
       user: {
         id: result.insertId,
@@ -70,7 +65,6 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if user exists
     const users = await User.findByEmail(email);
     if (users.length === 0) {
       return res.status(400).json({ message: 'Invalid credentials' });
@@ -78,13 +72,11 @@ const login = async (req, res) => {
 
     const user = users[0];
 
-    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Generate JWT token
     const payload = {
       user: {
         id: user.id,
@@ -124,21 +116,18 @@ const changePassword = async (req, res) => {
     
     const { currentPassword, newPassword } = req.body;
     
-    // Validate required fields
     if (!currentPassword || !newPassword) {
       return res.status(400).json({ 
         message: 'Both currentPassword and newPassword are required' 
       });
     }
     
-    // Check if user is authenticated
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: 'User not authenticated' });
     }
     
     const userId = req.user.id;
 
-    // Get user from database
     const users = await User.findById(userId);
     if (users.length === 0) {
       return res.status(404).json({ message: 'User not found' });
@@ -148,13 +137,10 @@ const changePassword = async (req, res) => {
     console.log('Found user in database:', user.email);
     console.log('Current user timestamps - Created:', user.created_at, 'Updated:', user.updated_at);
 
-    // Verify current password
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Current password is incorrect' });
     }
-
-    // Validate new password
     if (typeof newPassword !== 'string') {
       return res.status(400).json({ message: 'New password must be a string' });
     }
@@ -171,17 +157,13 @@ const changePassword = async (req, res) => {
       });
     }
 
-    // Hash new password
-    console.log('Hashing new password...');
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
     console.log('Password hashed successfully');
 
-    // Update password
     await User.updatePassword(userId, hashedPassword);
     console.log('Password updated in database');
 
-    // Get updated user to check new timestamps
     const updatedUsers = await User.findById(userId);
     const updatedUser = updatedUsers[0];
     console.log('Updated user timestamps - Created:', updatedUser.created_at, 'Updated:', updatedUser.updated_at);
@@ -203,8 +185,6 @@ const changePassword = async (req, res) => {
     });
   }
 };
-
-// Test endpoint to check user timestamps
 const testTimestamps = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {

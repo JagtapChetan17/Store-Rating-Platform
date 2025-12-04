@@ -70,7 +70,6 @@ const User = {
     return result;
   },
 
-  // Helper method to format dates
   formatDate: (dateString) => {
     if (!dateString) return null;
     const date = new Date(dateString);

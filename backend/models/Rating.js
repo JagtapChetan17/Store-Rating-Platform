@@ -1,4 +1,3 @@
-// backend/models/rating.js
 const db = require('../config/database');
 
 const Rating = {

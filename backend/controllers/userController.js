@@ -1,4 +1,3 @@
-// backend/controllers/userController.js
 const Store = require('../models/Store');
 const Rating = require('../models/Rating');
 

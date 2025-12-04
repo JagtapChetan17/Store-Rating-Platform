@@ -17,17 +17,12 @@ const createUser = async (req, res) => {
   try {
     const { name, email, password, address, role } = req.body;
 
-    // Check if user already exists
     const existingUsers = await User.findByEmail(email);
     if (existingUsers.length > 0) {
       return res.status(400).json({ message: 'User already exists' });
     }
-
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create user
     const result = await User.create({ name, email, password: hashedPassword, address, role });
 
     res.status(201).json({ message: 'User created successfully', userId: result.insertId });
@@ -83,7 +78,6 @@ const getUserDetails = async (req, res) => {
 
     const user = users[0];
 
-    // If user is a store owner, get their store details
     if (user.role === 'store_owner') {
       const stores = await Store.getByOwnerId(userId);
       const userWithStore = {

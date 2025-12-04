@@ -14,8 +14,7 @@ const auth = (roles = []) => {
       }
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret');
-      
-      // Make sure user object is properly structured
+  
       req.user = {
         id: decoded.user.id,
         email: decoded.user.email,
@@ -23,7 +22,6 @@ const auth = (roles = []) => {
         name: decoded.user.name || ''
       };
 
-      // Check if user has required role
       if (roles.length && !roles.includes(decoded.user.role)) {
         return res.status(403).json({ message: 'Access denied. Insufficient permissions.' });
       }

@@ -3,14 +3,12 @@ require('dotenv').config();
 
 const DB_NAME = process.env.DB_NAME || 'store_rating_platform';
 
-// Create a separate connection for setup
 const setupConnection = mysql.createConnection({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || 'root'
 });
 
-// Create a connection pool for app usage
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
@@ -28,7 +26,6 @@ async function setupDatabase() {
   try {
     console.log('Setting up database...');
 
-    // Create database if not exists
     await setupConnection.promise().query(`
       CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`
       DEFAULT CHARACTER SET utf8mb4
@@ -44,7 +41,6 @@ async function setupDatabase() {
 
     console.log('Creating tables...');
 
-    // USERS table (old MySQL compatible)
     await setupConnection.promise().query(`
       CREATE TABLE users (
         id INT NOT NULL AUTO_INCREMENT,
@@ -61,7 +57,6 @@ async function setupDatabase() {
     `);
     console.log('Users table created');
 
-    // STORES table
     await setupConnection.promise().query(`
       CREATE TABLE stores (
         id INT NOT NULL AUTO_INCREMENT,
@@ -79,8 +74,6 @@ async function setupDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
     `);
     console.log('Stores table created');
-
-    // RATINGS table
     await setupConnection.promise().query(`
       CREATE TABLE ratings (
         id INT NOT NULL AUTO_INCREMENT,
@@ -108,10 +101,8 @@ async function setupDatabase() {
   }
 }
 
-// Run the setup
 setupDatabase();
 
-// Test pool connection
 pool.getConnection((err, connection) => {
   if (err) {
     console.error('Error getting connection from pool:', err.message);
@@ -121,7 +112,6 @@ pool.getConnection((err, connection) => {
   }
 });
 
-// Pool events
 pool.on('acquire', (connection) => {
   console.log('Connection %d acquired', connection.threadId);
 });
