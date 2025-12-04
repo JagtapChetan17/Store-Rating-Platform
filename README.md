@@ -234,14 +234,3 @@ npm run build
 ## License
 
 Specify your preferred license (e.g., MIT).
-
----
-
-✅ Now your README has:
-
-* Live link
-* Demo video link
-* Database delay note
-* Login details (Admin, Owner, User)
-
-Do you also want me to create a **`.env.example` file** separately so others can set up faster?
