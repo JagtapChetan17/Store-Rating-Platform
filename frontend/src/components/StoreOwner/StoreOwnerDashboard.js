@@ -1,4 +1,3 @@
-// frontend/src/components/StoreOwner/StoreOwnerDashboard.js
 import React, { useState, useEffect } from 'react';
 import { storeOwnerAPI } from '../../services/api';
 import '../../styles/App.css';

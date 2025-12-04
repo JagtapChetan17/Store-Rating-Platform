@@ -1,4 +1,3 @@
-// frontend/src/components/Admin/UserForm.js
 import React, { useState } from 'react';
 import { adminAPI } from '../../services/api';
 import '../../styles/App.css';

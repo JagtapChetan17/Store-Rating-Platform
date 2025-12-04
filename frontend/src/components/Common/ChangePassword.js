@@ -22,7 +22,6 @@ const ChangePassword = () => {
   };
 
   const validateForm = () => {
-    // Clear previous messages
     setError('');
     setSuccess('');
 

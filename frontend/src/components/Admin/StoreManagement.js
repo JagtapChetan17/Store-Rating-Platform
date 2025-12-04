@@ -1,4 +1,3 @@
-// frontend/src/components/Admin/StoreManagement.js
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/api';
 import StoreForm from './StoreForm';

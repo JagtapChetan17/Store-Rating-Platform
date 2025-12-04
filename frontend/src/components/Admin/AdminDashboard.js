@@ -1,8 +1,7 @@
-// frontend/src/components/Admin/AdminDashboard.js (updated)
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../../services/api';
 import UserManagement from './UserManagement';
-import StoreManagement from './StoreManagement'; // Add this import
+import StoreManagement from './StoreManagement'; 
 import DashboardStats from './DashboardStats';
 import '../../styles/App.css';
 
@@ -33,7 +32,7 @@ const AdminDashboard = () => {
       case 'users':
         return <UserManagement />;
       case 'stores':
-        return <StoreManagement />; // Add this case
+        return <StoreManagement />; 
       default:
         return null;
     }
@@ -58,7 +57,7 @@ const AdminDashboard = () => {
         </button>
         <button 
           className={activeTab === 'stores' ? 'active' : ''}
-          onClick={() => setActiveTab('stores')} // Add this button
+          onClick={() => setActiveTab('stores')} 
         >
           Store Management
         </button>

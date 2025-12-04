@@ -10,7 +10,7 @@ const Register = () => {
     address: '',
     password: '',
     confirmPassword: '',
-    role: 'user' // Added role field
+    role: 'user' 
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

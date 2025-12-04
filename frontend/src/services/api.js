@@ -1,9 +1,7 @@
-// frontend/src/services/api.js
 import axios from 'axios';
 
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-// Create axios instance with base config
 export const authAPI = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -11,7 +9,6 @@ export const authAPI = axios.create({
   },
 });
 
-// Add request interceptor to include auth token
 authAPI.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -25,7 +22,6 @@ authAPI.interceptors.request.use(
   }
 );
 
-// Add response interceptor to handle auth errors
 authAPI.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -38,7 +34,6 @@ authAPI.interceptors.response.use(
   }
 );
 
-// API functions
 export const adminAPI = {
   getDashboardStats: () => authAPI.get('/admin/dashboard/stats'),
   createUser: (userData) => authAPI.post('/admin/users', userData),

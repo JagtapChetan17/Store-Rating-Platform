@@ -1,4 +1,3 @@
-// frontend/src/components/Admin/DashboardStats.js
 import React from 'react';
 import '../../styles/App.css';
 
